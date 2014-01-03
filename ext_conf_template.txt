@@ -1,0 +1,5 @@
+  # cat=basic/settings; type=string; label=Whitelist: CSV list of extension keys for which LLL rewriting is ALLLOWED, all keys not in this list will be forbidden.
+whitelist =
+
+  # cat=basic/settings; type=string; label=Blacklist: CSV list of extension keys for which LLL rewriting is FORBIDDEN, all keys not in this list will be allowed.
+blacklist =

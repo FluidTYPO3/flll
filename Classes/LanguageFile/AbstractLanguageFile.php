@@ -22,12 +22,20 @@ namespace FluidTYPO3\Flll\LanguageFile;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use FluidTYPO3\Flll\Service\LanguageFileService;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * @package Flll
  * @subpackage LanguageFile
  */
-class AbstractLanguageFile implements LanguageFileInterface {
+abstract class AbstractLanguageFile implements LanguageFileInterface {
+
+	/**
+	 * @var LanguageFileService
+	 */
+	protected $languageFileService;
 
 	/**
 	 * Storage: language codes for which labels must be written.
@@ -35,14 +43,138 @@ class AbstractLanguageFile implements LanguageFileInterface {
 	 *
 	 * @var array
 	 */
-	protected $simpleLanguageCodes = array();
+	protected $languages = array('default');
 
 	/**
-	 * Key=>value pairs of labels that should be added to the file
-	 * when written. Every pair gets written to every language.
+	 * @var string
+	 */
+	protected $filename;
+
+	/**
+	 * Key=>value pairs of existing labels which will not be written
+	 * to the file when saved.
 	 *
 	 * @var array
 	 */
 	protected $labels = array();
+
+	/**
+	 * New labels which will be written to file.
+	 *
+	 * @var array
+	 */
+	protected $newLabels = array();
+
+	/**
+	 * @param LanguageFileService $languageFileService
+	 * @return void
+	 */
+	public function injectLanguageFileService(LanguageFileService $languageFileService) {
+		$this->languageFileService = $languageFileService;
+	}
+
+	/**
+	 * @param array $basicLanguageCodes
+	 * @return void
+	 */
+	public function setLanguages(array $basicLanguageCodes) {
+		$this->languages = $basicLanguageCodes;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getLanguages() {
+		return $this->languages;
+	}
+
+	/**
+	 * @param string $filename
+	 * @return void
+	 */
+	public function setFilename($filename) {
+		$this->filename = $filename;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFilename() {
+		return $this->filename;
+	}
+
+	/**
+	 * Writes collected labels to file; uses stored filename if one exists,
+	 * otherwise fails to write. Throws \FluidTYPO3\LanguageFile\Exception
+	 * on errors; returns TRUE on success.
+	 *
+	 * @return boolean
+	 * @throws Exception
+	 */
+	public function write() {
+		foreach ($this->newLabels as $label => $value) {
+			$this->languageFileService->writeLanguageLabel($this->filename, $label, $value);
+		}
+	}
+
+	/**
+	 * Adds a label+value pair to internal storage; gets written to file.
+	 *
+	 * @param string $labelName
+	 * @param string $labelValue
+	 * @return void
+	 */
+	public function add($labelName, $labelValue) {
+		$this->newLabels[$labelName] = $labelValue;
+	}
+
+	/**
+	 * Destructor
+	 */
+	public function __destruct() {
+		if (FALSE !== strpos($this->filename, '/typo3/sysext/')) {
+			return;
+		}
+		if (TRUE === $this->isBlacklisted()) {
+			return;
+		}
+		if (FALSE === $this->isWhitelisted()) {
+			return;
+		}
+		$this->write();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isWhitelisted() {
+		$whitelist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'];
+		if (0 < count($whitelist)) {
+			foreach ($whitelist as $whitelistedExtensionKey) {
+				$whitelistedExtensionFolder = ExtensionManagementUtility::extPath($whitelistedExtensionKey);
+				if (0 === strpos($this->filename, $whitelistedExtensionFolder)) {
+					return TRUE;
+				}
+			}
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	protected function isBlacklisted() {
+		$blacklist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'];
+		if (0 < count($blacklist)) {
+			foreach ($blacklist as $blacklistedExtensionKey) {
+				$blacklistedExtensionFolder = ExtensionManagementUtility::extPath($blacklistedExtensionKey);
+				if (0 === strpos($this->filename, $blacklistedExtensionFolder)) {
+					return TRUE;
+				}
+			}
+		}
+		return FALSE;
+	}
 
 }

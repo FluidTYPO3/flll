@@ -30,24 +30,14 @@ namespace FluidTYPO3\Flll\LanguageFile;
 interface LanguageFileInterface {
 
 	/**
-	 * Fills object's internal storages with labelName=>labelValue keys.
-	 * Stores $filePathAndFilename for later use in write().
-	 *
-	 * @param string $filePathAndFilename
-	 * @return void
-	 */
-	public function read($filePathAndFilename);
-
-	/**
 	 * Writes collected labels to file; uses stored filename if one exists,
 	 * otherwise fails to write. Throws \FluidTYPO3\LanguageFile\Exception
 	 * on errors; returns TRUE on success.
 	 *
-	 * @param string $filePathAndFilename
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public function write($filePathAndFilename = NULL);
+	public function write();
 
 	/**
 	 * Adds a label+value pair to internal storage, ready to be written to
@@ -70,5 +60,16 @@ interface LanguageFileInterface {
 	 * @return void
 	 */
 	public function setLanguages(array $basicLanguageCodes);
+
+	/**
+	 * @param string $filename
+	 * @return void
+	 */
+	public function setFilename($filename);
+
+	/**
+	 * @return string
+	 */
+	public function getFilename();
 
 }

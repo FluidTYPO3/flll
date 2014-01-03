@@ -23,10 +23,26 @@ namespace FluidTYPO3\Flll\LanguageFile;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use FluidTYPO3\Flll\Utility\LanguageFileUtility;
+use TYPO3\CMS\Core\Localization\Parser\XliffParser as OriginalXliffParser;
+
 /**
  * @package Flll
  * @subpackage LanguageFile
  */
-class XlfLanguageFile extends AbstractLanguageFile implements LanguageFileInterface {
+class XliffParser extends OriginalXliffParser {
+
+	/**
+	 * Loads the current XML file before processing.
+	 *
+	 * @return DynamicLabelAccessor
+	 * @throws InvalidXmlFileException
+	 */
+	protected function parseXmlFile() {
+		$data = parent::parseXmlFile();
+		$proxy = LanguageFileUtility::createProxyForFile($this->sourcePath);
+		$proxy->load($data);
+		return $proxy;
+	}
 
 }
