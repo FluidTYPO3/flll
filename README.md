@@ -44,6 +44,9 @@ need to exclude a globally installed extension, use the white- and blacklisting 
 > Note: `FLLL` will also alphabetically sort the labels it adds - this fits very well with the `prefix.labelName` syntax that
 > Extbase encourages, to logically group your labels.
 
+> Note: Translation files are **cached** in TYPO3 - you will need to clear caches to actually see the added labels. However,
+> `FLLL` will not write duplicates to your files so you do not need to continually clear caches. Once in a while will suffice.
+
 ## How do I use it?
 
 Simply install it - and if you wish, through Extension Manager configure `FLLL` to white- or blacklist LLL writing for individual
