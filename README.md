@@ -30,7 +30,7 @@ default label values.
 
 ## How does it work?
 
-Technically: `FLLL` registers itself as both XML and XLIFF parser class which TYPO3 should use. The parsers then create a special
+Technically: `FLLL` replaces the original TYPO3 `LocalizationFactory` class special and instead of arrays, this new class returns
 proxy-type object (implementing ArrayAccess) which will always return TRUE from `offsetExists` and when reading a non-existing
 label, adds this label with a default value. On request termination each proxy object then writes any new labels to language files
 which are created if missing.
@@ -46,6 +46,9 @@ need to exclude a globally installed extension, use the white- and blacklisting 
 
 > Note: Translation files are **cached** in TYPO3 - you will need to clear caches to actually see the added labels. However,
 > `FLLL` will not write duplicates to your files so you do not need to continually clear caches. Once in a while will suffice.
+
+> Note: `FLLL` only triggers when your language files have been cached initially; this is done to prevent problems when rebuilding
+> the language cache contents.
 
 ## How do I use it?
 

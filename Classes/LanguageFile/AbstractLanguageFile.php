@@ -24,6 +24,7 @@ namespace FluidTYPO3\Flll\LanguageFile;
  ***************************************************************/
 use FluidTYPO3\Flll\Service\LanguageFileService;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -100,7 +101,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 * @return string
 	 */
 	public function getFilename() {
-		return $this->filename;
+		return GeneralUtility::getFileAbsFileName($this->filename);
 	}
 
 	/**
@@ -113,7 +114,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 */
 	public function write() {
 		foreach ($this->newLabels as $label => $value) {
-			$this->languageFileService->writeLanguageLabel($this->filename, $label, $value);
+			$this->languageFileService->writeLanguageLabel($this->getFilename(), $label);
 		}
 	}
 
@@ -148,11 +149,12 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 * @return boolean
 	 */
 	protected function isWhitelisted() {
+		$filename = $this->getFilename();
 		$whitelist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'];
 		if (0 < count($whitelist)) {
 			foreach ($whitelist as $whitelistedExtensionKey) {
 				$whitelistedExtensionFolder = ExtensionManagementUtility::extPath($whitelistedExtensionKey);
-				if (0 === strpos($this->filename, $whitelistedExtensionFolder)) {
+				if (0 === strpos($filename, $whitelistedExtensionFolder)) {
 					return TRUE;
 				}
 			}
@@ -165,11 +167,12 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 * @return boolean
 	 */
 	protected function isBlacklisted() {
+		$filename = $this->getFilename();
 		$blacklist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'];
 		if (0 < count($blacklist)) {
 			foreach ($blacklist as $blacklistedExtensionKey) {
 				$blacklistedExtensionFolder = ExtensionManagementUtility::extPath($blacklistedExtensionKey);
-				if (0 === strpos($this->filename, $blacklistedExtensionFolder)) {
+				if (0 === strpos($filename, $blacklistedExtensionFolder)) {
 					return TRUE;
 				}
 			}

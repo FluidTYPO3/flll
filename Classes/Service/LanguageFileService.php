@@ -124,17 +124,15 @@ XML;
 	/**
 	 * @param string $file
 	 * @param string $identifier
-	 * @param string $id
 	 * @return NULL
 	 * @throws Exception
 	 */
-	public function writeLanguageLabel($file, $identifier, $id) {
-		$pattern = '/[^a-z0-9_]+/i';
+	public function writeLanguageLabel($file, $identifier) {
 		$patternIdentifier = '/[^a-z0-9\._]+/i';
 
-		if (preg_match($pattern, $id) || preg_match($patternIdentifier, $identifier)) {
+		if (preg_match($patternIdentifier, $identifier)) {
 			throw new Exception('Cowardly refusing to create an invalid LLL reference called "' . $identifier . '" ' .
-				' in a Flux form called "' . $id . '" - one or both contains invalid characters.', 1388621871);
+				'- it contains invalid characters.', 1388621871);
 		}
 		$file = 0 === strpos($file, 'LLL:') ? substr($file, 4) : $file;
 		$filePathAndFilename = GeneralUtility::getFileAbsFileName($file);

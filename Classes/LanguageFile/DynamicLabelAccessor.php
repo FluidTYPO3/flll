@@ -10,7 +10,7 @@ namespace FluidTYPO3\Flll\LanguageFile;
  *
  * @package Flll
  */
-class DynamicLabelAccessor implements \ArrayAccess {
+class DynamicLabelAccessor implements \ArrayAccess, \Iterator {
 
 	/**
 	 * @var array
@@ -79,4 +79,42 @@ class DynamicLabelAccessor implements \ArrayAccess {
 		unset($this->labels[$offset]);
 	}
 
+	/**
+	 * @return mixed Can return any type.
+	 */
+	public function current() {
+		return current($this->labels);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function next() {
+		next($this->labels);
+	}
+
+	/**
+	 * @return mixed scalar on success, or null on failure.
+	 */
+	public function key() {
+		key($this->labels);
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function valid() {
+		$max = count($this->labels);
+		$current = current($this->labels);
+		$stack = array_values($this->labels);
+		$index = array_search($current, $stack);
+		return ($index < ($max - 1));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function rewind() {
+		reset($this->labels);
+	}
 }

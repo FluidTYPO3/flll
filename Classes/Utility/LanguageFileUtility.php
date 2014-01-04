@@ -26,6 +26,7 @@ namespace FluidTYPO3\Flll\Utility;
 use FluidTYPO3\Flll\LanguageFile\LanguageFileInterface;
 use FluidTYPO3\Flll\LanguageFile\DynamicLabelAccessor;
 use FluidTYPO3\Flll\Service\LanguageFileService;
+use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
@@ -36,10 +37,18 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 class LanguageFileUtility {
 
 	/**
-	 * @param $filePathAndFilename
+	 * @param string $filePathAndFilename
+	 * @param string $languageKey
+	 * @param array $data
 	 * @return DynamicLabelAccessor
 	 */
-	public static function createProxyForFile($filePathAndFilename) {
+	public static function createProxyForFile($filePathAndFilename, $languageKey, $data) {
+		/** @var LanguageStore $store */
+		$store = GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\LanguageStore');
+		if (FALSE === $store->hasData($filePathAndFilename, $languageKey)) {
+			$store->setData($filePathAndFilename, $languageKey, $data);
+			return $data;
+		}
 		/** @var ObjectManagerInterface $objectManager */
 		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		/** @var LanguageFileService $fileService */
@@ -48,6 +57,7 @@ class LanguageFileUtility {
 		/** @var DynamicLabelAccessor $proxy */
 		$proxy = $objectManager->get('FluidTYPO3\Flll\LanguageFile\DynamicLabelAccessor');
 		$proxy->setFile($fileInstance);
+		$proxy->load($data);
 		return $proxy;
 	}
 
