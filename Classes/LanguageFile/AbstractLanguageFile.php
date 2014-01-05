@@ -133,16 +133,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 * Destructor
 	 */
 	public function __destruct() {
-		if (FALSE !== strpos($this->filename, '/typo3/sysext/')) {
-			return;
-		}
-		if (TRUE === $this->isBlacklisted()) {
-			return;
-		}
-		if (FALSE === $this->isWhitelisted()) {
-			return;
-		}
-		$this->write();
+		TRUE === $this->isBlacklisted() || FALSE === $this->isWhitelisted() ? : $this->write();
 	}
 
 	/**
@@ -177,7 +168,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 				}
 			}
 		}
-		return FALSE;
+		return (FALSE !== strpos($filename, '/typo3/sysext/'));
 	}
 
 }
