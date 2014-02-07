@@ -108,6 +108,9 @@ XML;
 		$extension = pathinfo($filePathAndFilename, PATHINFO_EXTENSION);
 		$type = $this->extensionToTypeMap[$extension];
 		$className = 'FluidTYPO3\Flll\LanguageFile\\' . $type . 'LanguageFile';
+		if (FALSE === class_exists($className)) {
+			$className = 'FluidTYPO3\Flll\LanguageFile\UnknownLanguageFile';
+		}
 		/** @var LanguageFileInterface $fileInstance */
 		$fileInstance = $this->objectManager->get($className);
 		$fileInstance->setFilename($filePathAndFilename);
