@@ -86,7 +86,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 * @return array
 	 */
 	public function getLanguages() {
-		return $this->languages;
+		return (array) $this->languages;
 	}
 
 	/**
@@ -168,7 +168,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 				}
 			}
 		}
-		return (FALSE !== strpos($filename, '/typo3/sysext/'));
+		return (FALSE === strpos($filename, '/typo3/sysext/'));
 	}
 
 }

@@ -382,7 +382,7 @@ XML;
 		foreach ($sysLanguages as $language) {
 			array_push($languageKeys, $language['flag']);
 		}
-		return array_unique($languageKeys);
+		return (array) array_unique($languageKeys);
 	}
 
 	/**
