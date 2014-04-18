@@ -132,7 +132,6 @@ XML;
 	 */
 	public function writeLanguageLabel($file, $identifier) {
 		$patternIdentifier = '/[^a-z0-9\._]+/i';
-
 		if (preg_match($patternIdentifier, $identifier)) {
 			throw new Exception('Cowardly refusing to create an invalid LLL reference called "' . $identifier . '" ' .
 				'- it contains invalid characters.', 1388621871);

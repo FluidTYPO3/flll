@@ -34,6 +34,17 @@ use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
 class LanguageFileServiceTest extends BaseTestCase {
 
 	/**
+	 * @param string $name
+	 * @param array $data
+	 * @param string $dataName
+	 */
+	public function __construct($name = NULL, array $data = array(), $dataName = '') {
+		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
+		$this->objectManager = clone $objectManager;
+		parent::__construct($name, $data, $dataName);
+	}
+
+	/**
 	 * @param mixed $subject
 	 * @return void
 	 */
@@ -46,7 +57,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 	 */
 	public function performsEarlyReturnOnUnsupportedFileExtension() {
 		$service = $this->objectManager->get('FluidTYPO3\Flll\Service\LanguageFileService');
-		$return = $service->writeLanguageLabel('/dev/null', 'void', 'void');
+		$return = $service->writeLanguageLabel('/dev/null', 'void');
 		$this->assertEmpty($return);
 	}
 
@@ -56,7 +67,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 	public function throwsExeptionOnInvalidId() {
 		$service = $this->objectManager->get('FluidTYPO3\Flll\Service\LanguageFileService');
 		$this->setExpectedException('FluidTYPO3\Flll\LanguageFile\Exception', NULL, 1388621871);
-		$service->writeLanguageLabel('/dev/null', 'void', 'this-is-an-invalid-id');
+		$service->writeLanguageLabel('/dev/null', 'this-is-an-invalid-id');
 	}
 
 	/**
@@ -78,8 +89,8 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$instance->expects($this->atLeastOnce())->method('getLanguageKeys')->will($this->returnValue($languageKeys));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->any())->method('buildSourceForXlfFile')->with($fileName, 'test')->will($this->returnValue($domDocument->saveXML()));
-		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
-		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
+		$instance->writeLanguageLabel($dummyFile, 'test');
+		$instance->writeLanguageLabel($dummyFile, 'test');
 	}
 
 	/**
@@ -166,27 +177,6 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$instance->expects($this->any())->method('buildSourceForXmlFile')->with($fileName, 'test')->will($this->returnValue($domDocument->saveXML()));
 		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
 		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
-		if (TRUE === file_exists($fileName)) {
-			unlink($fileName);
-		}
-	}
-
-	/**
-	 * @test
-	 */
-	public function kickstartXmlFileReturnsFalseIfExistingFileHasNoDataNode() {
-		$dummyFile = 'typo3temp/lang.xml';
-		$fileName = GeneralUtility::getFileAbsFileName($dummyFile);
-		if (TRUE === file_exists($fileName)) {
-			unlink($fileName);
-		}
-		$domDocument = new \DOMDocument();
-		GeneralUtility::writeFile($fileName, $domDocument->saveXML());
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('buildSourceForXmlFile', 'prepareDomDocument'));
-		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
-		$instance->expects($this->any())->method('buildSourceForXmlFile')->with($fileName, 'test')->will($this->returnValue($domDocument->saveXML()));
-		$result = $this->callInaccessibleMethod($instance, 'kickstartXmlFile', $fileName);
-		$this->assertFalse($result);
 		if (TRUE === file_exists($fileName)) {
 			unlink($fileName);
 		}
