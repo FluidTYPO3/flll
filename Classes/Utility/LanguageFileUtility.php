@@ -38,17 +38,10 @@ class LanguageFileUtility {
 
 	/**
 	 * @param string $filePathAndFilename
-	 * @param string $languageKey
 	 * @param array $data
 	 * @return DynamicLabelAccessor
 	 */
-	public static function createProxyForFile($filePathAndFilename, $languageKey, $data) {
-		/** @var LanguageStore $store */
-		$store = GeneralUtility::makeInstance('TYPO3\CMS\Core\Localization\LanguageStore');
-		if (FALSE === $store->hasData($filePathAndFilename, $languageKey)) {
-			$store->setData($filePathAndFilename, $languageKey, $data);
-			return $data;
-		}
+	public static function createProxyForFile($filePathAndFilename, $data) {
 		/** @var ObjectManagerInterface $objectManager */
 		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		/** @var LanguageFileService $fileService */

@@ -133,42 +133,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 * Destructor
 	 */
 	public function __destruct() {
-		TRUE === $this->isBlacklisted() || FALSE === $this->isWhitelisted() ? : $this->write();
-	}
-
-	/**
-	 * @return boolean
-	 */
-	protected function isWhitelisted() {
-		$filename = $this->getFilename();
-		$whitelist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'];
-		if (0 < count($whitelist)) {
-			foreach ($whitelist as $whitelistedExtensionKey) {
-				$whitelistedExtensionFolder = ExtensionManagementUtility::extPath($whitelistedExtensionKey);
-				if (0 === strpos($filename, $whitelistedExtensionFolder)) {
-					return TRUE;
-				}
-			}
-			return FALSE;
-		}
-		return TRUE;
-	}
-
-	/**
-	 * @return boolean
-	 */
-	protected function isBlacklisted() {
-		$filename = $this->getFilename();
-		$blacklist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'];
-		if (0 < count($blacklist)) {
-			foreach ($blacklist as $blacklistedExtensionKey) {
-				$blacklistedExtensionFolder = ExtensionManagementUtility::extPath($blacklistedExtensionKey);
-				if (0 === strpos($filename, $blacklistedExtensionFolder)) {
-					return TRUE;
-				}
-			}
-		}
-		return (FALSE === strpos($filename, '/typo3/sysext/'));
+		$this->write();
 	}
 
 }

@@ -25,6 +25,8 @@ namespace FluidTYPO3\Flll\Localization;
 use FluidTYPO3\Flll\Utility\LanguageFileUtility;
 use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
@@ -44,44 +46,50 @@ class LocalizationFactory extends \TYPO3\CMS\Core\Localization\LocalizationFacto
 	 * @return array|boolean
 	 */
 	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
-		try {
-			$hash = md5($fileReference . $languageKey . $charset);
-			$this->errorMode = $errorMode;
-			// Check if the default language is processed before processing other language
-			if (FALSE === $this->store->hasData($fileReference, 'default') && 'default' !== $languageKey) {
-				$this->getParsedData($fileReference, 'default', $charset, $this->errorMode);
-			}
-			// If the content is parsed (local cache), use it
-			if (TRUE === $this->store->hasData($fileReference, $languageKey)) {
-				return (array) $this->store->getData($fileReference);
-			}
-
-			// If the content is in cache (system cache), use it
-			$data = $this->cacheInstance->get($hash);
-			if (FALSE !== $data) {
-				$this->store->setData($fileReference, $languageKey, $data);
-				$proxy = LanguageFileUtility::createProxyForFile($fileReference, $languageKey, (array) $data);
-				return array($languageKey => $proxy);
-			}
-
-			$this->store->setConfiguration($fileReference, $languageKey, $charset);
-			/** @var $parser LocalizationParserInterface */
-			$parser = $this->store->getParserInstance($fileReference);
-			// Get parsed data
-			$LOCAL_LANG = (array) $parser->getParsedData($this->store->getAbsoluteFileReference($fileReference), $languageKey, $charset);
-			// Override localization
-			if (FALSE === $isLocalizationOverride && TRUE === isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['locallangXMLOverride'])) {
-				$this->localizationOverride($fileReference, $languageKey, $charset, $errorMode, $LOCAL_LANG);
-			}
-			// Save parsed data in cache
-			$this->store->setData($fileReference, $languageKey, (array) $LOCAL_LANG[$languageKey]);
-			// Cache processed data
-			$this->cacheInstance->set($hash, $this->store->getDataByLanguage($fileReference, $languageKey));
-		} catch (FileNotFoundException $exception) {
-			// Source localization file not found
-			$this->store->setData($fileReference, $languageKey, array());
+		$data = parent::getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride);
+		if (FALSE === $this->isWhitelisted($fileReference) || TRUE === $this->isBlacklisted($fileReference)) {
+			return $data;
 		}
-		return (array) $this->store->getData($fileReference);
+		$proxy = LanguageFileUtility::createProxyForFile($fileReference, (array) $data);
+		return array($languageKey => $proxy);
+	}
+
+	/**
+	 * @param string $filename
+	 * @return boolean
+	 */
+	protected function isWhitelisted($filename) {
+		$filename = GeneralUtility::getFileAbsFileName($filename);
+		$whitelist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'];
+		if (0 < count($whitelist)) {
+			foreach ($whitelist as $whitelistedExtensionKey) {
+				$whitelistedExtensionFolder = ExtensionManagementUtility::extPath($whitelistedExtensionKey);
+				if (0 === strpos($filename, $whitelistedExtensionFolder)) {
+					return TRUE;
+				}
+			}
+			return FALSE;
+		}
+		return TRUE;
+	}
+
+	/**
+	 * @param string $filename
+	 * @return boolean
+	 */
+	protected function isBlacklisted($filename) {
+		$filename = GeneralUtility::getFileAbsFileName($filename);
+		$blacklist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'];
+		if (0 < count($blacklist)) {
+			foreach ($blacklist as $blacklistedExtensionKey) {
+				$blacklistedExtensionFolder = ExtensionManagementUtility::extPath($blacklistedExtensionKey);
+				if (0 === strpos($filename, $blacklistedExtensionFolder)) {
+					return TRUE;
+				}
+			}
+			return FALSE;
+		}
+		return (FALSE !== strpos($filename, '/typo3/sysext/'));
 	}
 
 }

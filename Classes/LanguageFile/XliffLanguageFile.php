@@ -29,4 +29,18 @@ namespace FluidTYPO3\Flll\LanguageFile;
  */
 class XliffLanguageFile extends AbstractLanguageFile implements LanguageFileInterface {
 
+	/**
+	 * Writes collected labels to file; uses stored filename if one exists,
+	 * otherwise fails to write. Throws \FluidTYPO3\LanguageFile\Exception
+	 * on errors; returns TRUE on success.
+	 *
+	 * @return boolean
+	 * @throws Exception
+	 */
+	public function write() {
+		foreach ($this->newLabels as $definition) {
+			$this->languageFileService->writeLanguageLabel($this->getFilename(), $definition);
+		}
+	}
+
 }
