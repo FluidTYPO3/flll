@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
 
 /**
- * @package Flux
+ * @package Flll
  */
 class LanguageFileServiceTest extends BaseTestCase {
 
