@@ -1,0 +1,13 @@
+{
+    "name": "fluidtypo3/flll",
+    "description": "FluidTYPO3 Localisation file auto-writer",
+    "type": "typo3-cms-extension",
+    "keywords": ["TYPO3 CMS", "language", "localisation"],
+    "homepage": "http://fluidtypo3.org",
+    "license": "GPL-2.0+",
+	"version": "0.0.1",
+    "support": {
+        "irc": "irc://irc.freenode.org/fedext",
+        "issues": "https://github.com/FluidTYPO3/flll/issues"
+    }
+}
