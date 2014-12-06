@@ -1,6 +1,8 @@
 Fluid Powered TYPO3: LLL File Writer
 ====================================
 
+[![Build Status](https://img.shields.io/jenkins/s/https/jenkins.fluidtypo3.org/flll.svg?style=flat-square)](https://jenkins.fluidtypo3.org/job/flll/) [![Coverage Status](https://img.shields.io/coveralls/FluidTYPO3/flll/development.svg?style=flat-square)](https://coveralls.io/r/FluidTYPO3/flll)
+
 A development-only tool to automatically create and update `locallang.xml` and `locallang.xlf` to add any missing labels.
 Every method of translation is covered - in Extbase, Fluid, TCA, FlexForms, TypoScript; litterally every method. When used, for
 example `f:translate` can be used without the need for a language file. `FLLL` then creates the file and starts adding all your

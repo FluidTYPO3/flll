@@ -3,11 +3,41 @@
     "description": "FluidTYPO3 Localisation file auto-writer",
     "type": "typo3-cms-extension",
     "keywords": ["TYPO3 CMS", "language", "localisation"],
-    "homepage": "http://fluidtypo3.org",
+    "homepage": "https://fluidtypo3.org",
     "license": "GPL-2.0+",
-	"version": "0.0.1",
+    "version": "0.0.1",
     "support": {
         "irc": "irc://irc.freenode.org/fedext",
         "issues": "https://github.com/FluidTYPO3/flll/issues"
+    },
+    "require-dev": {
+        "typo3/cms": "6.2.7",
+        "fluidtypo3/development": "*"
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "typo3/cms",
+                "version": "6.2.7",
+                "dist": {
+                    "url": "https://github.com/TYPO3/TYPO3.CMS/archive/6.2.7.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "FluidTYPO3\\Flll\\Tests\\": "Tests/",
+            "FluidTYPO3\\Flll\\": "Classes/"
+        },
+        "classmap": [
+            "vendor/typo3/cms/typo3/sysext/extbase",
+            "vendor/typo3/cms/typo3/sysext/fluid",
+            "vendor/typo3/cms/typo3/sysext/core",
+            "vendor/typo3/cms/typo3/sysext/backend",
+            "vendor/typo3/cms/typo3/sysext/frontend"
+        ]
     }
 }
