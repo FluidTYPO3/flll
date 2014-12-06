@@ -1,4 +1,5 @@
-<phpunit backupGlobals="false"
+<phpunit bootstrap="Tests/bootstrap.php"
+		backupGlobals="false"
         backupStaticAttributes="false"
         colors="true"
         convertErrorsToExceptions="true"
@@ -14,12 +15,12 @@
 
         <testsuites>
                 <testsuite name="EXT:flll">
-                        <directory>typo3conf/ext/flll/Tests</directory>
+                        <directory>Tests/</directory>
                 </testsuite>
         </testsuites>
 		<filter>
 				<whitelist>
-						<directory>typo3conf/ext/flll/Classes</directory>
+						<directory>Classes/</directory>
 				</whitelist>
 		</filter>
 </phpunit>
