@@ -23,10 +23,8 @@ namespace FluidTYPO3\Flll\Utility;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use FluidTYPO3\Flll\LanguageFile\LanguageFileInterface;
 use FluidTYPO3\Flll\LanguageFile\DynamicLabelAccessor;
 use FluidTYPO3\Flll\Service\LanguageFileService;
-use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 

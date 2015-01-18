@@ -23,11 +23,8 @@ namespace FluidTYPO3\Flll\Localization;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use FluidTYPO3\Flll\Utility\LanguageFileUtility;
-use TYPO3\CMS\Core\Localization\Exception\FileNotFoundException;
-use TYPO3\CMS\Core\Localization\Parser\LocalizationParserInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * @package Flll
