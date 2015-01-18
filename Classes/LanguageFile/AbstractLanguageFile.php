@@ -23,9 +23,7 @@ namespace FluidTYPO3\Flll\LanguageFile;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 use FluidTYPO3\Flll\Service\LanguageFileService;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * @package Flll
