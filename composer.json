@@ -27,10 +27,14 @@
             }
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "FluidTYPO3\\Flll\\": "Classes/"
+        }
+    },
     "autoload-dev": {
         "psr-4": {
-            "FluidTYPO3\\Flll\\Tests\\": "Tests/",
-            "FluidTYPO3\\Flll\\": "Classes/"
+            "FluidTYPO3\\Flll\\Tests\\": "Tests/"
         },
         "classmap": [
             "vendor/typo3/cms/typo3/sysext/extbase",
