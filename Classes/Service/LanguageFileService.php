@@ -159,6 +159,7 @@ XML;
 		$dom = $this->prepareDomDocument($filePathAndFilename);
 		foreach ($dom->getElementsByTagName('languageKey') as $languageNode) {
 			$nodes = array();
+			/** @var \DOMElement $languageNode */
 			foreach ($languageNode->getElementsByTagName('label') as $labelNode) {
 				$key = (string) $labelNode->attributes->getNamedItem('index')->firstChild->textContent;
 				if ($key === $identifier) {
@@ -172,6 +173,7 @@ XML;
 			$node->appendChild($attribute);
 			$nodes[$identifier] = $node;
 			ksort($nodes);
+			/** @var \DOMElement $labelNode */
 			foreach ($nodes as $labelNode) {
 				$languageNode->appendChild($labelNode);
 			}
@@ -203,6 +205,7 @@ XML;
 		$missingLanguages = $languages;
 		if (0 < $dataNode->childNodes->length) {
 			$missingLanguages = $languages;
+			/** @var \DOMElement $languageNode */
 			foreach ($dom->getElementsByTagName('languageKey') as $languageNode) {
 				$languageKey = $languageNode->getAttribute('index');
 				if (TRUE === in_array($languageKey, $missingLanguages)) {
@@ -241,6 +244,7 @@ XML;
 	 * @return string|boolean
 	 */
 	public function buildSourceForXlfFile($filePathAndFilename, $identifier) {
+		$xml = '';
 		$filePathAndFilename = $this->sanitizeFilePathAndFilename($filePathAndFilename, 'xlf');
 		$languages = $this->getLanguageKeys();
 		foreach ($languages as $language) {
@@ -250,6 +254,7 @@ XML;
 			$dateNode->nodeValue = date('c');
 			$dom->getElementsByTagName('file')->item(0)->appendChild($dateNode);
 			$body = $dom->getElementsByTagName('body')->item(0);
+			/** @var \DOMElement $node */
 			foreach ($dom->getElementsByTagName('trans-unit') as $node) {
 				if ($node->getAttribute('id') === $identifier) {
 					return TRUE;
@@ -379,7 +384,9 @@ XML;
 		$select = 'flag';
 		$from = 'sys_language';
 		$where = '1=1' . $cObj->enableFields('sys_language');
-		$sysLanguages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where);
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $db */
+		$db = &$GLOBALS['TYPO3_DB'];
+		$sysLanguages = $db->exec_SELECTgetRows($select, $from, $where);
 		return (array) $sysLanguages;
 	}
 
