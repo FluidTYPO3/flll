@@ -1,3 +1,6 @@
+# cat=basic/settings; type=boolean; label=Activate FLLL: NOTE: Whitelist your extension or blacklist flll.
+active = 0
+
   # cat=basic/settings; type=string; label=Whitelist: CSV list of extension keys for which LLL rewriting is ALLLOWED, all keys not in this list will be forbidden.
 whitelist =
 
