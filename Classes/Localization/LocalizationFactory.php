@@ -46,9 +46,11 @@ class LocalizationFactory extends \TYPO3\CMS\Core\Localization\LocalizationFacto
 		$whitelist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'];
 		if (0 < count($whitelist)) {
 			foreach ($whitelist as $whitelistedExtensionKey) {
-				$whitelistedExtensionFolder = ExtensionManagementUtility::extPath($whitelistedExtensionKey);
-				if (0 === strpos($filename, $whitelistedExtensionFolder)) {
-					return TRUE;
+				if(ExtensionManagementUtility::isLoaded($whitelistedExtensionKey)) {
+					$whitelistedExtensionFolder = ExtensionManagementUtility::extPath($whitelistedExtensionKey);
+					if (0 === strpos($filename, $whitelistedExtensionFolder)) {
+						return TRUE;
+					}
 				}
 			}
 			return FALSE;
@@ -65,9 +67,11 @@ class LocalizationFactory extends \TYPO3\CMS\Core\Localization\LocalizationFacto
 		$blacklist = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'];
 		if (0 < count($blacklist)) {
 			foreach ($blacklist as $blacklistedExtensionKey) {
-				$blacklistedExtensionFolder = ExtensionManagementUtility::extPath($blacklistedExtensionKey);
-				if (0 === strpos($filename, $blacklistedExtensionFolder)) {
-					return TRUE;
+				if(ExtensionManagementUtility::isLoaded($blacklistedExtensionKey)) {
+					$blacklistedExtensionFolder = ExtensionManagementUtility::extPath($blacklistedExtensionKey);
+					if (0 === strpos($filename, $blacklistedExtensionFolder)) {
+						return TRUE;
+					}
 				}
 			}
 			return FALSE;
