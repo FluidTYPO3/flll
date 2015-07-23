@@ -28,7 +28,7 @@ class LocalizationFactory extends \TYPO3\CMS\Core\Localization\LocalizationFacto
 	 * @param boolean $isLocalizationOverride TRUE if $fileReference is a localization override
 	 * @return array|boolean
 	 */
-	public function getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride = FALSE) {
+	public function getParsedData($fileReference, $languageKey, $charset = '', $errorMode = 0, $isLocalizationOverride = FALSE) {
 		$data = parent::getParsedData($fileReference, $languageKey, $charset, $errorMode, $isLocalizationOverride);
 		if (FALSE === $this->isWhitelisted($fileReference) || TRUE === $this->isBlacklisted($fileReference)) {
 			return $data;
