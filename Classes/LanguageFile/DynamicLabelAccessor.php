@@ -15,7 +15,7 @@ class DynamicLabelAccessor implements \ArrayAccess, \Iterator {
 	/**
 	 * @var array
 	 */
-	protected $labels = array();
+	protected $labels = [];
 
 	/**
 	 * @var LanguageFileInterface

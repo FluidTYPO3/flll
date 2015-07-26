@@ -10,7 +10,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF[$_EXTKEY] = [
 	'title' => 'FLLL: On-the-fly LLL file writer',
 	'description' => 'NOT FOR PRODUCTION USE! Automatically adds to your LLL files missing labels that you use in f:translate, LocalizationUtility etc.',
 	'category' => 'misc',
@@ -32,18 +32,18 @@ $EM_CONF[$_EXTKEY] = array(
 	'author_company' => '',
 	'CGLcompliance' => '',
 	'CGLcompliance_note' => '',
-	'constraints' => array(
-		'depends' => array(
+	'constraints' => [
+		'depends' => [
 			'typo3' => '6.0.0-6.2.99',
 			'cms' => '',
 			'extbase' => '',
-		),
-		'conflicts' => array(
-		),
-		'suggests' => array(
-		),
-	),
+		],
+		'conflicts' => [
+		],
+		'suggests' => [
+		],
+	],
 	'_md5_values_when_last_written' => '',
-	'suggests' => array(
-	),
-);
+	'suggests' => [
+	],
+];

@@ -21,7 +21,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 	 * @param array $data
 	 * @param string $dataName
 	 */
-	public function __construct($name = NULL, array $data = array(), $dataName = '') {
+	public function __construct($name = NULL, array $data = [], $dataName = '') {
 		$objectManager = GeneralUtility::makeInstance('TYPO3\CMS\Extbase\Object\ObjectManager');
 		$this->objectManager = clone $objectManager;
 		parent::__construct($name, $data, $dataName);
@@ -67,8 +67,8 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$node = $domDocument->createElement('file');
 		$domDocument->appendChild($node);
 		$node->appendChild($body);
-		$languageKeys = array('default');
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('buildSourceForXlfFile', 'prepareDomDocument', 'getLanguageKeys'));
+		$languageKeys = ['default'];
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['buildSourceForXlfFile', 'prepareDomDocument', 'getLanguageKeys']);
 		$instance->expects($this->atLeastOnce())->method('getLanguageKeys')->will($this->returnValue($languageKeys));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->any())->method('buildSourceForXlfFile')->with($fileName, 'test')->will($this->returnValue($domDocument->saveXML()));
@@ -101,8 +101,8 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$node = $domDocument->createElement('file');
 		$domDocument->appendChild($node);
 		$node->appendChild($body);
-		$languageKeys = array('default');
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument', 'createXlfLanguageNode', 'getLanguageKeys'));
+		$languageKeys = ['default'];
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['prepareDomDocument', 'createXlfLanguageNode', 'getLanguageKeys']);
 		$instance->expects($this->atLeastOnce())->method('getLanguageKeys')->will($this->returnValue($languageKeys));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->once())->method('createXlfLanguageNode');
@@ -127,7 +127,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$transUnit = $domDocument->createElement('trans-unit', 'test');
 		$transUnit->setAttribute('id', 'test');
 		$body->appendChild($transUnit);
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument', 'createXlfLanguageNode'));
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['prepareDomDocument', 'createXlfLanguageNode']);
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->never())->method('createXlfLanguageNode');
 		$result = $instance->buildSourceForXlfFile($fileName, 'test');
@@ -155,7 +155,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$meta->appendChild($description);
 		$domDocument->appendChild($node);
 		$domDocument->appendChild($meta);
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('buildSourceForXmlFile', 'prepareDomDocument'));
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['buildSourceForXmlFile', 'prepareDomDocument']);
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->any())->method('buildSourceForXmlFile')->with($fileName, 'test')->will($this->returnValue($domDocument->saveXML()));
 		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
@@ -182,7 +182,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$languageKey->appendChild($label);
 		$node->appendChild($languageKey);
 		$domDocument->appendChild($node);
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument', 'writeFile'));
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['prepareDomDocument', 'writeFile']);
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->any())->method('writeFile')->will($this->returnValue(TRUE));
 		$result = $instance->buildSourceForXmlFile($fileName, 'test');
@@ -209,7 +209,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 		$languageKey->appendChild($label);
 		$node->appendChild($languageKey);
 		$domDocument->appendChild($node);
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument'));
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['prepareDomDocument']);
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$result = $instance->buildSourceForXmlFile($fileName, 'test');
 		$this->assertTrue($result);
@@ -271,14 +271,14 @@ class LanguageFileServiceTest extends BaseTestCase {
 	 * @test
 	 */
 	public function canGetLanguageKeys() {
-		$languageRecords = array(
-			array('flag' => 'en')
-		);
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('loadLanguageRecordsFromDatabase'));
+		$languageRecords = [
+			['flag' => 'en']
+		];
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['loadLanguageRecordsFromDatabase']);
 		$instance->expects($this->once())->method('loadLanguageRecordsFromDatabase')->will($this->returnValue($languageRecords));
 		$result = $this->callInaccessibleMethod($instance, 'getLanguageKeys');
 		$this->assertIsArray($result);
-		$this->assertEquals(array('default', 'en'), $result);
+		$this->assertEquals(['default', 'en'], $result);
 	}
 
 	/**
@@ -286,7 +286,7 @@ class LanguageFileServiceTest extends BaseTestCase {
 	 */
 	public function canPrepareDomDocument() {
 		$fileName = GeneralUtility::tempnam('test');
-		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('readFile'));
+		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', ['readFile']);
 		$source = '<test></test>';
 		$domDocument = new \DOMDocument();
 		$domDocument->appendChild($domDocument->createElement('test'));

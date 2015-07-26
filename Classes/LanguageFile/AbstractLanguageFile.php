@@ -28,7 +28,7 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 *
 	 * @var array
 	 */
-	protected $languages = array('default');
+	protected $languages = ['default'];
 
 	/**
 	 * @var string
@@ -41,14 +41,14 @@ abstract class AbstractLanguageFile implements LanguageFileInterface {
 	 *
 	 * @var array
 	 */
-	protected $labels = array();
+	protected $labels = [];
 
 	/**
 	 * New labels which will be written to file.
 	 *
 	 * @var array
 	 */
-	protected $newLabels = array();
+	protected $newLabels = [];
 
 	/**
 	 * @param LanguageFileService $languageFileService

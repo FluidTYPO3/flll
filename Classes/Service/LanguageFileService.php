@@ -31,15 +31,15 @@ class LanguageFileService implements SingletonInterface {
 	/**
 	 * @var array
 	 */
-	protected $extensionToTypeMap = array(
+	protected $extensionToTypeMap = [
 		'xml' => 'Xml',
 		'xlf' => 'Xliff'
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	protected static $validExtensions = array('xml', 'xlf');
+	protected static $validExtensions = ['xml', 'xlf'];
 
 	/**
 	 * @var string
@@ -49,7 +49,7 @@ class LanguageFileService implements SingletonInterface {
 	/**
 	 * @var array
 	 */
-	protected static $documents = array();
+	protected static $documents = [];
 
 	const TEMPLATE_XML = <<< XML
 <T3locallang>
@@ -106,7 +106,7 @@ XML;
 	 * @return void
 	 */
 	public function reset() {
-		self::$documents = array();
+		self::$documents = [];
 	}
 
 	/**
@@ -142,8 +142,8 @@ XML;
 		$buildMethodName = 'buildSourceFor' . ucfirst($extension) . 'File';
 		$kickstartMethodName = 'kickstart' . ucfirst($extension) . 'File';
 		$languages = $this->getLanguageKeys();
-		call_user_func_array(array(self, $kickstartMethodName), array($filePathAndFilename, $languages));
-		$source = call_user_func_array(array(self, $buildMethodName), array($filePathAndFilename, $identifier));
+		call_user_func_array([self, $kickstartMethodName], [$filePathAndFilename, $languages]);
+		$source = call_user_func_array([self, $buildMethodName], [$filePathAndFilename, $identifier]);
 		if (TRUE === is_string($source)) {
 			$this->writeFile($filePathAndFilename, $source);
 		}
@@ -158,7 +158,7 @@ XML;
 		$filePathAndFilename = $this->sanitizeFilePathAndFilename($filePathAndFilename, 'xml');
 		$dom = $this->prepareDomDocument($filePathAndFilename);
 		foreach ($dom->getElementsByTagName('languageKey') as $languageNode) {
-			$nodes = array();
+			$nodes = [];
 			foreach ($languageNode->getElementsByTagName('label') as $labelNode) {
 				$key = (string) $labelNode->attributes->getNamedItem('index')->firstChild->textContent;
 				if ($key === $identifier) {
@@ -185,7 +185,7 @@ XML;
 	 * @param array $languages
 	 * @return boolean
 	 */
-	public function kickstartXmlFile($filePathAndFilename, $languages = array('default')) {
+	public function kickstartXmlFile($filePathAndFilename, $languages = ['default']) {
 		$filePathAndFilename = $this->sanitizeFilePathAndFilename($filePathAndFilename, 'xml');
 		if (TRUE === isset(self::$documents[$filePathAndFilename])) {
 			return TRUE;
@@ -287,9 +287,9 @@ XML;
 	 * @param array $languageOrLanguages
 	 * @return boolean|array
 	 */
-	public function kickstartXlfFile($filePathAndFilename, $languageOrLanguages = array('default')) {
+	public function kickstartXlfFile($filePathAndFilename, $languageOrLanguages = ['default']) {
 		if (TRUE === is_array($languageOrLanguages)) {
-			$results = array();
+			$results = [];
 			foreach ($languageOrLanguages as $language) {
 				$results[$language] = $this->kickstartXlfFile($filePathAndFilename, $language);
 			}
@@ -362,7 +362,7 @@ XML;
 	 */
 	protected function getLanguageKeys() {
 		$sysLanguages = $this->loadLanguageRecordsFromDatabase();
-		$languageKeys = array('default');
+		$languageKeys = ['default'];
 		foreach ($sysLanguages as $language) {
 			array_push($languageKeys, $language['flag']);
 		}

@@ -34,7 +34,7 @@ class LocalizationFactory extends \TYPO3\CMS\Core\Localization\LocalizationFacto
 			return $data;
 		}
 		$proxy = LanguageFileUtility::createProxyForFile($fileReference, (array) $data);
-		return array($languageKey => $proxy);
+		return [$languageKey => $proxy];
 	}
 
 	/**
