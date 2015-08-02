@@ -8,6 +8,7 @@ namespace FluidTYPO3\Flll\Tests\Unit\Service;
  * LICENSE.md file that was distributed with this source code.
  */
 
+use FluidTYPO3\Flll\Service\LanguageFileService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Tests\UnitTestCase;
 
@@ -39,6 +40,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 	 * @test
 	 */
 	public function performsEarlyReturnOnUnsupportedFileExtension() {
+		/** @var LanguageFileService $service */
 		$service = $this->objectManager->get('FluidTYPO3\Flll\Service\LanguageFileService');
 		$return = $service->writeLanguageLabel('/dev/null', 'void');
 		$this->assertEmpty($return);
@@ -48,6 +50,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 	 * @test
 	 */
 	public function throwsExeptionOnInvalidId() {
+		/** @var LanguageFileService $service */
 		$service = $this->objectManager->get('FluidTYPO3\Flll\Service\LanguageFileService');
 		$this->setExpectedException('FluidTYPO3\Flll\LanguageFile\Exception', NULL, 1388621871);
 		$service->writeLanguageLabel('/dev/null', 'this-is-an-invalid-id');
@@ -68,6 +71,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 		$domDocument->appendChild($node);
 		$node->appendChild($body);
 		$languageKeys = array('default');
+		/** @var LanguageFileService|\PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('buildSourceForXlfFile', 'prepareDomDocument', 'getLanguageKeys'));
 		$instance->expects($this->atLeastOnce())->method('getLanguageKeys')->will($this->returnValue($languageKeys));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
@@ -102,6 +106,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 		$domDocument->appendChild($node);
 		$node->appendChild($body);
 		$languageKeys = array('default');
+		/** @var LanguageFileService|\PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument', 'createXlfLanguageNode', 'getLanguageKeys'));
 		$instance->expects($this->atLeastOnce())->method('getLanguageKeys')->will($this->returnValue($languageKeys));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
@@ -127,6 +132,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 		$transUnit = $domDocument->createElement('trans-unit', 'test');
 		$transUnit->setAttribute('id', 'test');
 		$body->appendChild($transUnit);
+		/** @var LanguageFileService|\PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument', 'createXlfLanguageNode'));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->never())->method('createXlfLanguageNode');
@@ -155,11 +161,12 @@ class LanguageFileServiceTest extends UnitTestCase {
 		$meta->appendChild($description);
 		$domDocument->appendChild($node);
 		$domDocument->appendChild($meta);
+		/** @var LanguageFileService|\PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('buildSourceForXmlFile', 'prepareDomDocument'));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->any())->method('buildSourceForXmlFile')->with($fileName, 'test')->will($this->returnValue($domDocument->saveXML()));
-		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
-		$instance->writeLanguageLabel($dummyFile, 'test', 'test');
+		$instance->writeLanguageLabel($dummyFile, 'test');
+		$instance->writeLanguageLabel($dummyFile, 'test');
 		if (TRUE === file_exists($fileName)) {
 			unlink($fileName);
 		}
@@ -182,6 +189,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 		$languageKey->appendChild($label);
 		$node->appendChild($languageKey);
 		$domDocument->appendChild($node);
+		/** @var LanguageFileService|\PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument', 'writeFile'));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$instance->expects($this->any())->method('writeFile')->will($this->returnValue(TRUE));
@@ -209,6 +217,7 @@ class LanguageFileServiceTest extends UnitTestCase {
 		$languageKey->appendChild($label);
 		$node->appendChild($languageKey);
 		$domDocument->appendChild($node);
+		/** @var LanguageFileService|\PHPUnit_Framework_MockObject_MockObject $instance */
 		$instance = $this->getMock('FluidTYPO3\Flll\Service\LanguageFileService', array('prepareDomDocument'));
 		$instance->expects($this->atLeastOnce())->method('prepareDomDocument')->with($fileName)->will($this->returnValue($domDocument));
 		$result = $instance->buildSourceForXmlFile($fileName, 'test');
