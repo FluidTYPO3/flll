@@ -9,12 +9,12 @@ namespace FluidTYPO3\Flll\Tests\Unit\Service;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase;
+use TYPO3\CMS\Core\Tests\UnitTestCase;
 
 /**
  * @package Flll
  */
-class LanguageFileServiceTest extends BaseTestCase {
+class LanguageFileServiceTest extends UnitTestCase {
 
 	/**
 	 * @param string $name
