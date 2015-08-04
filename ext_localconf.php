@@ -4,14 +4,17 @@ if (!defined('TYPO3_MODE')) {
 }
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup'] = unserialize($_EXTCONF);
 if (TRUE === (bool) $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['active']) {
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'] =
-		0 < strlen(trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'])) ?
-			\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'])) :
-			array();
-	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'] =
-		0 < strlen(trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'])) ?
-			\TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'])) :
-			array();
-	$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\CMS\Core\Localization\LocalizationFactory'] =
-		array('className' => 'FluidTYPO3\Flll\Localization\LocalizationFactory');
+	$whitelist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist']));
+	if (TRUE !== empty($whitelist)) {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'] = $whitelist;
+	} else {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'] = array();
+	}
+	$blacklist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist']));
+	if (TRUE !== empty($blacklist)) {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'] = $blacklist;
+	} else {
+		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['blacklist'] = array();
+	}
+	$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\CMS\Core\Localization\LocalizationFactory'] = array('className' => 'FluidTYPO3\Flll\Localization\LocalizationFactory');
 }

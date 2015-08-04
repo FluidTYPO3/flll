@@ -51,7 +51,7 @@ class LanguageFileService implements SingletonInterface {
 	 */
 	protected static $documents = array();
 
-	const TEMPLATE_XML = <<< XML
+	const TEMPLATE_XML = '
 <T3locallang>
 	<meta type="array">
 		<type>module</type>
@@ -59,16 +59,16 @@ class LanguageFileService implements SingletonInterface {
 	</meta>
 	<data type="array"></data>
 </T3locallang>
-XML;
+';
 
-	const TEMPLATE_XLF = <<< XML
+	const TEMPLATE_XLF = '
 <xliff version="1.0">
 	<file source-language="en" datatype="plaintext" original="messages" date="" product-name="">
 		<header/>
 		<body></body>
 	</file>
 </xliff>
-XML;
+';
 
 	/**
 	 * @param ObjectManagerInterface $objectManager
@@ -241,6 +241,7 @@ XML;
 	 * @return string|boolean
 	 */
 	public function buildSourceForXlfFile($filePathAndFilename, $identifier) {
+		$xml = '';
 		$filePathAndFilename = $this->sanitizeFilePathAndFilename($filePathAndFilename, 'xlf');
 		$languages = $this->getLanguageKeys();
 		foreach ($languages as $language) {
