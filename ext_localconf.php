@@ -3,7 +3,7 @@ if (!defined('TYPO3_MODE')) {
 	die('Access denied.');
 }
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup'] = unserialize($_EXTCONF);
-if (TRUE === (bool) $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['active']) {
+if (TRUE === (bool) $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['active'] && 'BE' === TYPO3_MODE) {
 	$whitelist = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', trim($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist']));
 	if (TRUE !== empty($whitelist)) {
 		$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['flll']['setup']['whitelist'] = $whitelist;
