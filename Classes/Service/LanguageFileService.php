@@ -374,12 +374,9 @@ class LanguageFileService implements SingletonInterface {
 	 * @return array
 	 */
 	protected function loadLanguageRecordsFromDatabase() {
-		$cObj = new ContentObjectRenderer();
-		$GLOBALS['TSFE'] = new TypoScriptFrontendController($GLOBALS['TYPO3_CONF_VARS'], 0, 0);
-		$GLOBALS['TSFE']->sys_page = new PageRepository();
 		$select = 'flag';
 		$from = 'sys_language';
-		$where = '1=1' . $cObj->enableFields('sys_language');
+		$where = '1=1';
 		$sysLanguages = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($select, $from, $where);
 		return (array) $sysLanguages;
 	}
