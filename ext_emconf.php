@@ -39,6 +39,7 @@ $EM_CONF[$_EXTKEY] = array(
 			'extbase' => '',
 		),
 		'conflicts' => array(
+			't3quixplorer' => '',
 		),
 		'suggests' => array(
 		),
